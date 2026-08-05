@@ -1,0 +1,59 @@
+=== Script 1: Firmas ECDSA Brutas con Viem ===
+
+✓ Par de claves secp256k1 generado
+
+📝 Mensaje: "Hello UFM"
+📄 Firma (hexadecimal):
+30450220494b601f2d3b8d75a60ac2eb2111905369ab49106dea29b6c254b0d86b0fac79022100f2cb651da3f5b2cc5f8305bc2d9db4a5245111cae569f3556624965dc2d05649
+
+✓ Firma válida verificada: true
+
+🔴 Firma corrupta verificada: false
+❌ Firma inválida
+
+✓ Wallet generado con Viem
+📍 Dirección Ethereum: 0x0d068e4F44339298AFd4bbeEC24D1931510265d2
+
+🔐 Clave privada (GUARDAR PARA SCRIPT 2):
+0xfa9b94a5d84bcc7f8e7e3ecc168b76aa01e63f464bfa7f93efbe90d58642eab7
+
+=== Script 1 Completado ===
+
+=== Script 2: ERC-712 Datos Tipificados con Viem ===
+
+✓ Wallet Viem recuperado
+📍 Dirección: 0x0d068e4F44339298AFd4bbeEC24D1931510265d2
+
+📋 Dominio EIP-712:
+   Nombre: UFM Course
+   Versión: 1
+   Chain ID: 31337
+
+📝 Tipo Enrollment:
+   - student (address)
+   - course (string)
+
+✉️  Mensaje de Inscripción:
+   student: 0x0d068e4F44339298AFd4bbeEC24D1931510265d2
+   course: SE-4XX
+
+🔐 Hash EIP-712 (para firmado):
+0x187d2dd58cfff534b8f794943d6429e116ae6dacacec74e8f716fce9590ef631
+
+✍️  Firma ERC-712:
+0x51a0881bad615a2e3724202c1dddb82efaf4fcfd27c6d6d6ac22e968336c614161e1d218c8a7bfa3669ed3dc189eceb3ca08140e752def80f0ae6d13cffa0a4a1c
+
+🔧 Componentes de la firma (para ecrecover):
+   r: 0x51a0881bad615a2e3724202c1dddb82efaf4fcfd27c6d6d6ac22e968336c6141
+   s: 0x61e1d218c8a7bfa3669ed3dc189eceb3ca08140e752def80f0ae6d13cffa0a4a
+   v: 28
+
+📌 SALIDA IMPORTANTE:
+   - Dirección del estudiante: 0x0d068e4F44339298AFd4bbeEC24D1931510265d2
+   - Hash EIP-712: 0x187d2dd58cfff534b8f794943d6429e116ae6dacacec74e8f716fce9590ef631
+   - Firma completa: 0x51a0881bad615a2e3724202c1dddb82efaf4fcfd27c6d6d6ac22e968336c614161e1d218c8a7bfa3669ed3dc189eceb3ca08140e752def80f0ae6d13cffa0a4a1c
+   - Componente r: 0x51a0881bad615a2e3724202c1dddb82efaf4fcfd27c6d6d6ac22e968336c6141
+   - Componente s: 0x61e1d218c8a7bfa3669ed3dc189eceb3ca08140e752def80f0ae6d13cffa0a4a
+   - Componente v: 28
+
+=== Script 2 Completado ===
