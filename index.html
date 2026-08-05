@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 01 — Firmas Criptográficas · Technologies &amp; Freedom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1B2D;
+    --paper:#EDE8DC;
+    --paper-dim:#B9B6AC;
+    --gold:#C9A24B;
+    --slate:#5C7089;
+    --ok:#6B9080;
+    --bad:#B4523B;
+    --rule: rgba(237,232,220,0.14);
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--sans);
+    line-height:1.6;
+  }
+  ::selection{ background:var(--gold); color:var(--ink); }
+  a{ color:var(--gold); }
+
+  .wrap{
+    max-width:880px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  header.hero{
+    padding:96px 0 72px;
+    border-bottom:1px solid var(--rule);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--slate);
+    margin:0 0 22px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(38px, 6vw, 62px);
+    line-height:1.05;
+    margin:0 0 6px;
+    color:var(--paper);
+  }
+  .subtitle{
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(18px,2.4vw,22px);
+    color:var(--paper-dim);
+    margin:0 0 34px;
+  }
+  .hero-meta{
+    display:flex;
+    gap:32px;
+    flex-wrap:wrap;
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--paper-dim);
+  }
+  .hero-meta span b{ color:var(--paper); font-weight:500; }
+
+  section{
+    padding:64px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  section:last-of-type{ border-bottom:none; }
+
+  .num{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:15px;
+    color:var(--gold);
+    display:block;
+    margin-bottom:10px;
+  }
+  h2{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(26px,3.4vw,34px);
+    margin:0 0 18px;
+    color:var(--paper);
+  }
+  h3{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:17px;
+    color:var(--gold);
+    margin:34px 0 10px;
+  }
+  p{ color:var(--paper-dim); margin:0 0 16px; max-width:66ch; }
+
+  pre{
+    font-family:var(--mono);
+    font-size:13px;
+    line-height:1.55;
+    background:#0A141F;
+    border:1px solid var(--rule);
+    border-radius:8px;
+    padding:20px 22px;
+    overflow-x:auto;
+    color:#CFE0D8;
+    margin:0 0 20px;
+  }
+  #salida-output{
+    white-space:pre-wrap;
+    word-break:break-word;
+    color:var(--paper-dim);
+    min-height:120px;
+  }
+  #salida-output .redacted{
+    color:var(--bad);
+    font-style:italic;
+  }
+
+  .qa{ margin-bottom:38px; }
+  .qa h3{ margin-top:0; }
+  .qa p{ max-width:none; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Technologies &amp; Freedom</p>
+    <h1>Lab 01</h1>
+    <p class="subtitle">Firmas Criptográficas</p>
+    <div class="hero-meta">
+      <span>Autor: <b>Antonio Valdés</b></span>
+      <span>Repo: <b><a href="https://github.com/Antonio-3108/Tech-Freedom/tree/main/lab01" target="_blank">github.com/Antonio-3108/Tech-Freedom</a></b></span>
+    </div>
+  </header>
+
+  <section id="reflexion">
+    <span class="num">I.</span>
+    <h2>Libertad y firmas</h2>
+
+    <div class="qa">
+      <h3>1. ¿Cómo funcionan las firmas criptográficas?</h3>
+      <p>Las firmas criptográficas permiten demostrar que una persona posee una clave privada sin necesidad de revelarla. La clave privada se utiliza para firmar datos y debe mantenerse secreta; la clave pública sirve para verificar esas firmas y puede compartirse libremente. Si una firma se modifica la verificación falla porque los hashes comparados dejan de coincidir con el mensaje y la clave pública correspondiente. Esta comparacion garantiza tanto la autenticidad como la integridad de la información. La corrupción puede suceder por una alteración en el documento o un daño en el código de la firma.</p>
+      <p>Una firma ERC-712 contiene datos estructurados, como el mensaje que se firma, el tipo de datos y un dominio con información como el nombre de la aplicación, la versión y el chainId, que un contrato inteligenteen Ethereum puede validar de manera segura. A diferencia de una firma "bruta", que solo firma un mensaje, ERC-712 agrega contexto para que la firma solo sea válida para una aplicación y una red específicas, reduciendo el riesgo de que pueda reutilizarse en otro lugar.</p>
+    </div>
+
+    <div class="qa">
+      <h3>2. ¿Por qué esto importa para la libertad?</h3>
+      <p>Las firmas criptográficas son importantes para la libertad porque permiten demostrar la identidad de una persona sin depender de una autoridad central. En lugar de confiar en un banco, una empresa o un gobierno para validar una transacción, la prueba la proporciona la propia firma generada con la clave privada. Además, ofrecen no repudiación, ya que quien firma no puede negar posteriormente su participación, y son resistentes a la censura, porque la validez de una firma depende únicamente de las reglas criptográficas y no de la decisión de un tercero.</p>
+      <p>Esto se relaciona con la filosofía de la UFM sobre la confianza minimizada y el poder individual, porque la seguridad se basa en las matemáticas en lugar de la confianza en instituciones. Al final cada persona mantiene el control de su propia identidad y puede interactuar directamente con otros sin intermediarios, promoviendo una mayor autonomía y responsabilidad individual.</p>
+    </div>
+
+    <div class="qa">
+      <h3>3. Viem vs. ethers.js</h3>
+      <p>Un desarrollador moderno elegiría Viem porque ofrece una API más clara, un mejor soporte para TypeScript, un menor tamaño de librería y tiene un diseño más modular a comparacion que el de ethers.js. Viem fue diseñado desde cero pensando en el desarrollo actual, cada función se importa de manera independiente lo que permite que el bundle final sea más liviano y que el código sea más fácil de mantener.</p>
+      <p>Adionalmente, Viem es la base sobre la que está construido Wagmi, una de las bibliotecas más utilizadas para desarrollar aplicaciones Web3 con React. Como ambas herramientas son mantenidas por el mismo equipo, se integran de forma natural. Wagmi usa internamente las funciones de Viem para leer contratos, firmar mensajes y manejar cuentas. Por estas razones, el ecosistema Ethereum se está moviendo cada vez más hacia Viem, y dominarlo ahora prepara a un desarrollador para trabajar con las herramientas más actuales del stack Web3.</p>
+    </div>
+
+    <div class="qa">
+      <h3>4. Comparación de seguridad</h3>
+      <p>Si alguien intentara falsificar la firma ERC-712 en una aplicación blockchain no podría generar una firma válida sin conocer la clave privada, ya que hacerlo requeriría resolver el problema de el logaritmo discreto sobre la curva elíptica secp256k1 que es computacionalmente inviable con la tecnología actual. El componente v es importante porque ayuda a recuperar la clave pública correcta durante la verificación, eliminando una ambigüedad matemática que de otra forma dejaría dos posibles claves candidatas.</p>
+      <p>El dominio EIP-712 vincula la firma a una aplicación y una red específicas, evitando que una firma válida pueda reutilizarse en otra blockchain o en una aplicación diferente. Como el nombre, la versión y el chainId forman parte del hash que se firma, cambiar el contexto produce un hash completamente diferente, y la verificación termina fallando.</p>
+    </div>
+  </section>
+
+  <section id="salida">
+    <span class="num">II.</span>
+    <h2>Salida de los scripts</h2>
+    <pre id="salida-output">=== Script 1: Firmas ECDSA Brutas con Viem ===
+
+✓ Par de claves secp256k1 generado
+
+📝 Mensaje: "Hello UFM"
+📄 Firma (hexadecimal):
+30450220494b601f2d3b8d75a60ac2eb2111905369ab49106dea29b6c254b0d86b0fac79022100f2cb651da3f5b2cc5f8305bc2d9db4a5245111cae569f3556624965dc2d05649
+
+✓ Firma válida verificada: true
+
+🔴 Firma corrupta verificada: false
+❌ Firma inválida
+
+✓ Wallet generado con Viem
+📍 Dirección Ethereum: 0x0d068e4F44339298AFd4bbeEC24D1931510265d2
+
+🔐 Clave privada (GUARDAR PARA SCRIPT 2):
+<span class="redacted">[REDACTADA]</span>
+
+=== Script 1 Completado ===
+
+=== Script 2: ERC-712 Datos Tipificados con Viem ===
+
+✓ Wallet Viem recuperado
+📍 Dirección: 0x0d068e4F44339298AFd4bbeEC24D1931510265d2
+
+📋 Dominio EIP-712:
+   Nombre: UFM Course
+   Versión: 1
+   Chain ID: 31337
+
+📝 Tipo Enrollment:
+   - student (address)
+   - course (string)
+
+✉️  Mensaje de Inscripción:
+   student: 0x0d068e4F44339298AFd4bbeEC24D1931510265d2
+   course: SE-4XX
+
+🔐 Hash EIP-712 (para firmado):
+0x187d2dd58cfff534b8f794943d6429e116ae6dacacec74e8f716fce9590ef631
+
+✍️  Firma ERC-712:
+0x51a0881bad615a2e3724202c1dddb82efaf4fcfd27c6d6d6ac22e968336c614161e1d218c8a7bfa3669ed3dc189eceb3ca08140e752def80f0ae6d13cffa0a4a1c
+
+🔧 Componentes de la firma (para ecrecover):
+   r: 0x51a0881bad615a2e3724202c1dddb82efaf4fcfd27c6d6d6ac22e968336c6141
+   s: 0x61e1d218c8a7bfa3669ed3dc189eceb3ca08140e752def80f0ae6d13cffa0a4a
+   v: 28
+
+📌 SALIDA IMPORTANTE:
+   - Dirección del estudiante: 0x0d068e4F44339298AFd4bbeEC24D1931510265d2
+   - Hash EIP-712: 0x187d2dd58cfff534b8f794943d6429e116ae6dacacec74e8f716fce9590ef631
+   - Firma completa: 0x51a0881bad615a2e3724202c1dddb82efaf4fcfd27c6d6d6ac22e968336c614161e1d218c8a7bfa3669ed3dc189eceb3ca08140e752def80f0ae6d13cffa0a4a1c
+   - Componente r: 0x51a0881bad615a2e3724202c1dddb82efaf4fcfd27c6d6d6ac22e968336c6141
+   - Componente s: 0x61e1d218c8a7bfa3669ed3dc189eceb3ca08140e752def80f0ae6d13cffa0a4a
+   - Componente v: 28
+
+=== Script 2 Completado ===</pre>
+  </section>
+</div>
+
+</body>
+</html>
