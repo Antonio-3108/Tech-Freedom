@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 03 — Multisig &amp; ERC-4337 · Technologies &amp; Freedom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1B2D;
+    --paper:#EDE8DC;
+    --paper-dim:#B9B6AC;
+    --gold:#C9A24B;
+    --slate:#5C7089;
+    --ok:#6B9080;
+    --bad:#B4523B;
+    --rule: rgba(237,232,220,0.14);
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--sans);
+    line-height:1.6;
+  }
+  ::selection{ background:var(--gold); color:var(--ink); }
+  a{ color:var(--gold); }
+
+  .wrap{
+    max-width:880px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  header.hero{
+    padding:96px 0 72px;
+    border-bottom:1px solid var(--rule);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--slate);
+    margin:0 0 22px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(38px, 6vw, 62px);
+    line-height:1.05;
+    margin:0 0 6px;
+    color:var(--paper);
+  }
+  .subtitle{
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(18px,2.4vw,22px);
+    color:var(--paper-dim);
+    margin:0 0 34px;
+  }
+  .hero-meta{
+    display:flex;
+    gap:32px;
+    flex-wrap:wrap;
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--paper-dim);
+  }
+  .hero-meta span b{ color:var(--paper); font-weight:500; }
+
+  section{
+    padding:64px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  section:last-of-type{ border-bottom:none; }
+
+  .num{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:15px;
+    color:var(--gold);
+    display:block;
+    margin-bottom:10px;
+  }
+  h2{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(26px,3.4vw,34px);
+    margin:0 0 18px;
+    color:var(--paper);
+  }
+  h3{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:17px;
+    color:var(--gold);
+    margin:34px 0 10px;
+  }
+  h3:first-of-type{ margin-top:0; }
+  p{ color:var(--paper-dim); margin:0 0 16px; max-width:66ch; }
+
+  /* Tarjeta de la wallet multisig */
+  .wallet-card{
+    background:#0A141F;
+    border:1px solid var(--rule);
+    border-radius:8px;
+    padding:24px 26px;
+    margin-bottom:8px;
+  }
+  .wallet-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:16px;
+    flex-wrap:wrap;
+    padding:12px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  .wallet-row:last-child{ border-bottom:none; padding-bottom:0; }
+  .wallet-row:first-child{ padding-top:0; }
+  .wallet-label{
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--slate);
+  }
+  .wallet-value{
+    font-family:var(--mono);
+    font-size:14px;
+    color:var(--paper);
+    word-break:break-all;
+    text-align:right;
+  }
+  .threshold-badge{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:14px;
+    color:var(--gold);
+    border:1px solid var(--gold);
+    border-radius:20px;
+    padding:2px 12px;
+  }
+
+  /* Lista de integrantes */
+  .members-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:grid;
+    gap:10px;
+  }
+  .members-list li{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:16px;
+    font-family:var(--mono);
+    font-size:14px;
+    background:#0A141F;
+    border:1px solid var(--rule);
+    border-radius:6px;
+    padding:12px 16px;
+  }
+  .members-list li span:first-child{ color:var(--paper); }
+  .members-list li span:last-child{ color:var(--slate); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Technologies &amp; Freedom</p>
+    <h1>Lab 03</h1>
+    <p class="subtitle">Multisig y Abstracción de Cuentas (ERC-4337)</p>
+    <div class="hero-meta">
+      <span><b>Antonio Valdés</b></span>
+      <span>Proyecto: <b>Tech &amp; Freedom</b></span>
+      <span>Repo: <b><a href="https://github.com/Antonio-3108/Tech-Freedom/tree/main/lab03" target="_blank">github.com/Antonio-3108/Tech-Freedom</a></b></span>
+    </div>
+  </header>
+
+  <section id="wallet">
+    <span class="num">I.</span>
+    <h2>Wallet multisig</h2>
+    <div class="wallet-card">
+      <div class="wallet-row">
+        <span class="wallet-label">Proyecto</span>
+        <span class="wallet-value">Tech &amp; Freedom</span>
+      </div>
+      <div class="wallet-row">
+        <span class="wallet-label">Dirección</span>
+        <span class="wallet-value">0x0d9A420b86dF4073559b3Fd1F7bC7D9eA1EfdAEa</span>
+      </div>
+      <div class="wallet-row">
+        <span class="wallet-label">Threshold</span>
+        <span class="threshold-badge">2 / 4</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="integrantes">
+    <span class="num">II.</span>
+    <h2>Integrantes del equipo</h2>
+    <ul class="members-list">
+      <li><span>Cynthia Santos</span><span>20230493</span></li>
+      <li><span>Fabián Miranda</span><span>20230223</span></li>
+      <li><span>José Antonio Valdés</span><span>20230050</span></li>
+      <li><span>Kristopher Paz</span><span>20210408</span></li>
+    </ul>
+  </section>
+
+  <section id="erc4337">
+    <span class="num">III.</span>
+    <h2>ERC-4337</h2>
+
+    <h3>Resumen</h3>
+    <p>ERC-4337 es el estándar de Ethereum que permite que una wallet funcione como un contrato inteligente en lugar de depender de una llave privada tradicional. No necesita cambios en el protocolo base, sino que trabaja sobre una mempool alterna. En vez de firmar una transacción normal, el usuario genera una UserOperation, que describe lo que este usuario quiere realizar. Un bundler recoge varias de estas UserOperations de distintos usuarios y las agrupa en una sola transacción real que se manda al contrato EntryPoint, que es el que valida y ejecuta todo el lote.</p>
+    <p>La wallet puede definir su propia lógica de validación, así que en vez de exigir una firma con llave privada puede aceptar una passkey, un esquema de varias firmas, o cualquier combinación de reglas. Además existe la figura del paymaster, que es un contrato opcional que puede pagar la comisión por procesar la operación por el usuario, o cobrarla en otro token distinto al nativo de la red. También existe la posibilidad de que la wallet tenga una dirección válida antes de desplegarse en cadena, desplegándose hasta que se usa por primera vez.</p>
+
+    <h3>Cómo se usaría en el venture</h3>
+    <p>Esto es básicamente lo que ya se describe en el venture: la billetera del productor la pensamos como una smart account con passkey más recuperación social, precisamente para que nadie tenga que manejar una frase semilla; si el productor pierde el teléfono, no pierde el acceso a su dinero. Eso es literalmente lo que permite ERC-4337, porque la validación de la cuenta no depende de una sola llave privada sino de la lógica que nosotros programemos, y esa lógica puede cambiar con el tiempo sin que el productor tenga que migrar de wallet.</p>
+    <p>Esto también resuelve el problema de los pagos por lote. Como el bundler puede agrupar cientos de operaciones en una sola transacción hacia el EntryPoint, es lo que hace posible que pagarle a 600 socios en un solo día cueste centavos en vez de que cada pago se cobre por separado. Y con un paymaster nos evitamos pedirle al productor que tenga que comprar el token nativo de la red solo para poder mover su dinero: la cooperativa o nosotros mismos podemos cubrir esa comisión, o cobrarla directamente en la misma stablecoin que el productor ya está recibiendo, para que su experiencia sea simplemente recibir dólares digitales y poder moverlos sin fricción.</p>
+  </section>
+</div>
+
+</body>
+</html>
