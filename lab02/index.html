@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 02 — Firmas Criptográficas · Technologies &amp; Freedom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1B2D;
+    --paper:#EDE8DC;
+    --paper-dim:#B9B6AC;
+    --gold:#C9A24B;
+    --slate:#5C7089;
+    --ok:#6B9080;
+    --bad:#B4523B;
+    --rule: rgba(237,232,220,0.14);
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--sans);
+    line-height:1.6;
+  }
+  ::selection{ background:var(--gold); color:var(--ink); }
+  a{ color:var(--gold); }
+
+  .wrap{
+    max-width:880px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  header.hero{
+    padding:96px 0 72px;
+    border-bottom:1px solid var(--rule);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--slate);
+    margin:0 0 22px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(38px, 6vw, 62px);
+    line-height:1.05;
+    margin:0 0 6px;
+    color:var(--paper);
+  }
+  .subtitle{
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(18px,2.4vw,22px);
+    color:var(--paper-dim);
+    margin:0 0 34px;
+  }
+  .hero-meta{
+    display:flex;
+    gap:32px;
+    flex-wrap:wrap;
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--paper-dim);
+  }
+  .hero-meta span b{ color:var(--paper); font-weight:500; }
+
+  section{
+    padding:64px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  section:last-of-type{ border-bottom:none; }
+
+  .num{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:15px;
+    color:var(--gold);
+    display:block;
+    margin-bottom:10px;
+  }
+  h2{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(26px,3.4vw,34px);
+    margin:0 0 18px;
+    color:var(--paper);
+  }
+  h3{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:17px;
+    color:var(--gold);
+    margin:34px 0 10px;
+  }
+  p{ color:var(--paper-dim); margin:0 0 16px; max-width:66ch; }
+
+  pre{
+    font-family:var(--mono);
+    font-size:13px;
+    line-height:1.55;
+    background:#0A141F;
+    border:1px solid var(--rule);
+    border-radius:8px;
+    padding:20px 22px;
+    overflow-x:auto;
+    color:#CFE0D8;
+    margin:0 0 20px;
+  }
+  #salida-output{
+    white-space:pre-wrap;
+    word-break:break-word;
+    color:var(--paper-dim);
+    min-height:120px;
+  }
+  #salida-output .redacted{
+    color:var(--bad);
+    font-style:italic;
+  }
+
+  .qa{ margin-bottom:38px; }
+  .qa h3{ margin-top:0; }
+  .qa p{ max-width:none; }
+
+  /* Lista de la frase semilla: cuadrícula numerada, monoespaciada */
+  .seed-list{
+    list-style:none;
+    counter-reset:seed;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:10px 20px;
+    margin:0;
+    padding:0;
+    max-width:520px;
+  }
+  .seed-list li{
+    counter-increment:seed;
+    font-family:var(--mono);
+    font-size:14px;
+    color:var(--paper);
+    background:#0A141F;
+    border:1px solid var(--rule);
+    border-radius:6px;
+    padding:10px 12px;
+  }
+  .seed-list li::before{
+    content:counter(seed) ". ";
+    color:var(--gold);
+  }
+  @media (max-width:520px){
+    .seed-list{ grid-template-columns:repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Technologies &amp; Freedom</p>
+    <h1>Lab 02</h1>
+    <p class="subtitle"></p>
+    <div class="hero-meta">
+      <span><b>Antonio Valdés</b></span>
+      <span>Repo: <b><a href="https://github.com/Antonio-3108/Tech-Freedom/tree/main/lab02" target="_blank">github.com/Antonio-3108/Tech-Freedom</a></b></span>
+    </div>
+  </header>
+
+  <section id="aprendizajes">
+    <span class="num">I.</span>
+    <h2>Aprendizajes del laboratorio</h2>
+    <div class="qa">
+      <p>En este laboratorio aprendí cómo una frase semilla permite generar múltiples direcciones dentro de una misma wallet mediante un proceso de derivación determinista. La semilla actúa como el punto de partida único a partir del cual, siguiendo rutas de derivación específicas, es posible generar tantas direcciones como se necesiten sin tener que crear ni respaldar una semilla distinta para cada una. Además, las rutas de derivación determinan qué dirección se genera a partir de la semilla, lo que permite organizar y administrar diferentes direcciones de forma segura a partir de un mismo respaldo.</p>
+    </div>
+  </section>
+
+  <section id="reflexion">
+    <span class="num">II.</span>
+    <h2>Frase semilla</h2>
+    <ol class="seed-list">
+      <li>cram</li>
+      <li>lecture</li>
+      <li>latin</li>
+      <li>erase</li>
+      <li>spare</li>
+      <li>smoke</li>
+      <li>nephew</li>
+      <li>paper</li>
+      <li>enjoy</li>
+      <li>wink</li>
+      <li>choice</li>
+      <li>shiver</li>
+    </ol>
+  </section>
+
+  <section id="salida">
+    <span class="num">III.</span>
+    <h2>Direcciones derivadas de la semilla única</h2>
+    <pre id="salida-output">======================================================================
+SEMILLA
+======================================================================
+Index: 0 | Ruta: m/44'/0'/0'/0/0 | Dirección: 1EZ8tzF3pNkG1esg6p7Lxn17sstNAy9ne9
+Index: 1 | Ruta: m/44'/0'/0'/0/1 | Dirección: 1ACTtCT245QMhmYud46B3oy8iCcw4D8XHn
+Index: 2 | Ruta: m/44'/0'/0'/0/2 | Dirección: 13EwVb53PDKUqsHctMyQuFAPSaFkUAG3Dz
+Index: 3 | Ruta: m/44'/0'/0'/0/3 | Dirección: 1LCJauTMLerCSrbHa8U1HHqnzPg9g4zfVq
+Index: 4 | Ruta: m/44'/0'/0'/0/4 | Dirección: 1GDPWzY5bZ6WAFMDsHJXgbaCetd9yKZSzL
+Index: 5 | Ruta: m/44'/0'/0'/0/5 | Dirección: 114EhLXZfMcsGnTTKhtgGVq1Y7mT2TYrTK
+Index: 6 | Ruta: m/44'/0'/0'/0/6 | Dirección: 1AFhVqq8zF4tRR8YzEKjtLT4xxMkPqkjME
+Index: 7 | Ruta: m/44'/0'/0'/0/7 | Dirección: 1PXxFegvfRQmByrnFeW6FuFmBMeZiyj6pm
+Index: 8 | Ruta: m/44'/0'/0'/0/8 | Dirección: 1CHzoDQ5Tsh65mrPwtd1JeDgLVP7JfhdUt
+Index: 9 | Ruta: m/44'/0'/0'/0/9 | Dirección: 1KHx6pYTB7n1neskFV9eqFMbW9riduYjZg</pre>
+  </section>
+</div>
+
+</body>
+</html>
