@@ -1,3 +1,7 @@
 .venv
-lab01/node_modules
+.idea
 .vscode
+desktop.ini
+lab01/node_modules
+lab04/node_modules
+
