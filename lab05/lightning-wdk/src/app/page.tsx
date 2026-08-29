@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 
 const BACKEND_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+  process.env.NEXT_PUBLIC_BACKEND_URL || "https://tech-freedom.onrender.com/";
 
 type ReceiveInvoice = {
   invoiceId: string;

@@ -169,7 +169,7 @@ async function startServer() {
 
   app.listen(port, "0.0.0.0", () => {
     console.log(
-      `WDK backend running on http://localhost:${port}`
+      `WDK backend running on port ${port}`
     );
   });
 }
