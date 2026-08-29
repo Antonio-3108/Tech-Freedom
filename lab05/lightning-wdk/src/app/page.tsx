@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 
+const BACKEND_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "https://tech-freedom.onrender.com";
+
 type ReceiveInvoice = {
   invoiceId: string;
   bolt11: string;
@@ -45,7 +48,7 @@ export default function Home() {
     const interval = window.setInterval(async () => {
       try {
         const response = await fetch(
-          `/api/check/${encodeURIComponent(invoice.invoiceId)}`
+          `${BACKEND_URL}/api/check/${encodeURIComponent(invoice.invoiceId)}`
         );
 
         const data = await response.json();
@@ -89,7 +92,7 @@ export default function Home() {
     setCreatingInvoice(true);
 
     try {
-      const response = await fetch("/api/invoice", {
+      const response = await fetch(`${BACKEND_URL}/api/invoice`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +116,9 @@ export default function Home() {
 
       setInvoice(data as ReceiveInvoice);
     } catch {
-      setError("No se pudo conectar con el servidor.");
+      setError(
+        `No se pudo conectar con el backend: ${BACKEND_URL}`
+      );
     } finally {
       setCreatingInvoice(false);
     }
@@ -150,7 +155,7 @@ export default function Home() {
     setPaying(true);
 
     try {
-      const response = await fetch("/api/pay", {
+      const response = await fetch(`${BACKEND_URL}/api/pay`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -175,7 +180,7 @@ export default function Home() {
       });
     } catch {
       setPaymentResult({
-        error: "No se pudo conectar con el servidor.",
+        error: `No se pudo conectar con el backend: ${BACKEND_URL}`,
       });
     } finally {
       setPaying(false);
