@@ -1,0 +1,70 @@
+# Flujo normal
+
+Computadora 1 (seeder):
+2026-10-13T06:22:38.446Z archivo: archivo.txt tamaño: 360000 bytes
+2026-10-13T06:22:38.475Z bloques en el core: 22
+KEY (pásasela al downloader): 7476aa0ebea09fa53e3d00813f1f5be065c97a3c6797a846c7c6a9de7b3bcc96
+2026-10-13T06:22:42.986Z seeding... (Ctrl+C para detener)
+2026-10-13T06:32:07.930Z downloader conectado 53f62f72
+2026-10-13T06:32:17.357Z error connection reset by peer
+2026-10-13T06:32:17.357Z downloader desconectado 53f62f72
+
+Computadora 2 (downloader):
+2026-10-13T06:32:26.134Z conectado a peer 852cf581
+2026-10-13T06:32:26.509Z bloques totales: 22
+2026-10-13T06:32:26.652Z bloque 1/22
+2026-10-13T06:32:27.005Z bloque 2/22
+2026-10-13T06:32:27.453Z bloque 3/22
+2026-10-13T06:32:27.861Z bloque 4/22
+2026-10-13T06:32:28.811Z bloque 5/22
+2026-10-13T06:32:29.540Z bloque 6/22
+2026-10-13T06:32:29.926Z bloque 7/22
+2026-10-13T06:32:30.261Z bloque 8/22
+2026-10-13T06:32:30.631Z bloque 9/22
+2026-10-13T06:32:30.970Z bloque 10/22
+2026-10-13T06:32:31.333Z bloque 11/22
+2026-10-13T06:32:31.658Z bloque 12/22
+2026-10-13T06:32:31.992Z bloque 13/22
+2026-10-13T06:32:32.319Z bloque 14/22
+2026-10-13T06:32:32.661Z bloque 15/22
+2026-10-13T06:32:33.022Z bloque 16/22
+2026-10-13T06:32:33.355Z bloque 17/22
+2026-10-13T06:32:33.725Z bloque 18/22
+2026-10-13T06:32:34.120Z bloque 19/22
+2026-10-13T06:32:34.478Z bloque 20/22
+2026-10-13T06:32:35.018Z bloque 21/22
+2026-10-13T06:32:35.408Z bloque 22/22
+2026-10-13T06:32:35.745Z COMPLETO: recibido.txt
+2026-10-13T06:32:35.798Z peer desconectado 852cf581
+
+---
+
+# Kill seeder
+
+Computadora 1 (seeder):
+2026-10-13T06:43:43.913Z archivo: archivo.txt tamaño: 360000 bytes
+2026-10-13T06:43:43.926Z bloques en el core: 22
+KEY (pásasela al downloader): 37af47c3ad5e081e4425eef1fe3b240eb6a6543fcee09c4904202903efd9f4a6
+2026-10-13T06:43:47.676Z seeding... (Ctrl+C para detener)
+2026-10-13T06:44:42.084Z downloader conectado da56e47e
+
+Computadora 2 (downloader):
+2026-10-13T06:45:00.220Z conectado a peer 14cfa5f5
+2026-10-13T06:45:00.579Z bloques totales: 22
+2026-10-13T06:45:00.695Z bloque 1/22
+2026-10-13T06:45:01.070Z bloque 2/22
+2026-10-13T06:45:01.410Z bloque 3/22
+2026-10-13T06:45:01.764Z bloque 4/22
+2026-10-13T06:45:02.085Z bloque 5/22
+2026-10-13T06:45:02.439Z bloque 6/22
+2026-10-13T06:45:02.757Z bloque 7/22
+2026-10-13T06:45:03.092Z bloque 8/22
+2026-10-13T06:45:03.473Z bloque 9/22
+2026-10-13T06:45:03.836Z bloque 10/22
+2026-10-13T06:45:04.234Z bloque 11/22
+2026-10-13T06:45:04.598Z bloque 12/22
+2026-10-13T06:45:04.940Z bloque 13/22
+2026-10-13T06:45:18.600Z error connection timed out
+2026-10-13T06:45:18.626Z peer desconectado 14cfa5f5
+2026-10-13T06:45:20.358Z FALLO en bloque 14/22: REQUEST_TIMEOUT: Request timed out
+2026-10-13T06:45:20.382Z INCOMPLETO: 13/22 bloques

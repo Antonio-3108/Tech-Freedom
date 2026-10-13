@@ -1,0 +1,19 @@
+Topic: cs031-s19-20261012 (SHA-256, primeros 8 hex: 35276680)
+Computadora 1 = carnet 20230050_1 (IP 192.168.68.142)
+Computadora 2 = carnet 20230050_2 (IP 192.168.68.165)
+
+Computadora 1:
+topic 35276680
+2026-10-13T06:05:34.517Z connected ed3c65f3
+2026-10-13T06:05:34.518Z remote: 192.168.68.165 49737
+2026-10-13T06:05:34.519Z ed3c65f3 ping desde 20230050_2
+
+Computadora 2:
+topic 35276680
+2026-10-13T05:58:47.335Z connected 340df8dc
+2026-10-13T05:58:47.543Z remote: 192.168.68.142 undefined
+2026-10-13T05:58:47.726Z 340df8dc ping desde 20230050_1
+
+Notas:
+- En la Computadora 2 el puerto remoto salió undefined; la IP sí se obtuvo.
+- Los timestamps difieren por 7 minutos porque las conexiones son de corridas distintas (no iniciadas al mismo tiempo)
